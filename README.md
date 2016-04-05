@@ -3,7 +3,7 @@ Hackathon-kit
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-##### SETUP
+##### SETUP (if you want to do it manually, instead of using the button above)
 ```
 - Install heroku toolbelt (https://toolbelt.heroku.com/)
 - Install git
