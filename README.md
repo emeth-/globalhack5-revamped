@@ -1,4 +1,4 @@
-Hackathon-kit
+The FOOT - Globalhack 5 Project
 ===========
 
 
@@ -14,7 +14,7 @@ Hackathon-kit
 - Input the two urls as shown in the image below, replacing the domain with the location of your Heroku app.
 ![](http://teachthe.net/topclipbox/2016-04-05_23-12-07PZCAFG.png)
 
-##### Development Info
+#### Development Info
 ```
 - Install git
 - Install python 2.7.6
@@ -52,3 +52,4 @@ Make it so everytime you push to Github, Heroku rebuilds server with latest code
 - Click DEPLOY
 - Under Deployment Method, click Github (Connect to Github) and follow instructions
 ```
+![](http://teachthe.net/topclipbox/2016-04-05_23-21-39GFDKJ2.png)
