@@ -1,14 +1,18 @@
 import os, sys
 import csv
 
-os.system("rm db.sqlite3") #Kill existing db
-os.system("rm -rf api/migrations/") #kill existing db definitions
-os.system("python manage.py migrate") #Create new db
-
 sys.path.append("hackathon/")
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 import django
 django.setup()
+
+try:
+    os.system("rm db.sqlite3") #Kill existing db
+except:
+    pass
+
+os.system("python manage.py migrate") #Create new db
+
 
 from api.models import Citation, Violation
 from dateutil import parser
@@ -86,6 +90,3 @@ with open('violations.csv', 'rb') as f:
             })
             new_violation.save()
     print "Imported", i, "violations."
-
-print "****Please run the below command to get create a user for the django admin panel"
-print "python manage.py loaddata fixtures/superuser.json"
