@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
+    url(r'^$', "api.views.load_frontend"),
     url(r'^get_info_special$', "api.views.get_info"),
 
     url(r'^contact_received$', "api.views.contact_received"),

@@ -6,6 +6,7 @@ from dateutil import parser
 from django.db.models import Q
 import sys
 from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
 
 def json_custom_parser(obj):
     if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date):
@@ -476,3 +477,7 @@ def get_info(request):
             "status": "error",
             "message": "Citation not found in database."
         }, default=json_custom_parser), content_type='application/json', status=200)
+
+
+def load_frontend(request):
+    return HttpResponseRedirect("/static/index.html")
