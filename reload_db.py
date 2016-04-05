@@ -1,8 +1,7 @@
 import os, sys
 import csv
 
-sys.path.append("hackathon/")
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'hackathon.settings'
 import django
 django.setup()
 
