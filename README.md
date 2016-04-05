@@ -5,13 +5,20 @@ The FOOT - Globalhack 5 Project
 
 #### Setup your own instance
 
+##### Heroku
+
 - Create Heroku account
+- Deploy to Heroku with button below
+
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+##### Twilio
 
 - Create Twilio Account
 - Buy a number that has support for SMS and Voice ($1 a month)
 - Go to Phone Numbers -> Manage -> Click your phone number
 - Input the two urls as shown in the image below, replacing the domain with the location of your Heroku app.
+
 ![](http://teachthe.net/topclipbox/2016-04-05_23-12-07PZCAFG.png)
 
 #### Development Info
