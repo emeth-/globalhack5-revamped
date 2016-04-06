@@ -92,6 +92,12 @@ def contact_received(request):
                             print "if so, change auth_type to dob and send user message to send dob"
                             request.session['last_name'] = sms_from_user
                             request.session['auth_type'] = "dob"
+                            twil = '''<?xml version="1.0" encoding="UTF-8"?>
+                                    <Response>
+                                        <Message method="GET">What is your date of birth?</Message>
+                                    </Response>
+                                    '''
+                            return HttpResponse(twil, content_type='application/xml', status=200)
                         
                     elif request.session['auth_type'] == "dob":
                         
