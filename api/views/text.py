@@ -22,7 +22,7 @@ def contact_received(request):
         else:
             request.session['last_validated'] = datetime.datetime.now().isoformat()
             
-        if 'Body' in request.POST and request.POST['Body'].lower() == "logout":
+        if 'Body' in request.POST and request.POST['Body'].lower() == "restart":
             logout(request)
             
         sms_from_user = request.POST.get('Body', '')
@@ -77,15 +77,15 @@ def contact_received(request):
                         citation_in_db = Citation.objects.filter(last_name__iexact=sms_from_user)
                     
                         if not citation_in_db.exists():
-                            #if not, throw error to user and send user message to send last name
-                            print "if not, throw error to user and send user message to send last name"
+                            #if not, throw error to user
+                            print "if not, throw error to user2"
                             request.session['auth_type'] = "last_name"
-                            del request.session['auth_type']
                             twil = '''<?xml version="1.0" encoding="UTF-8"?>
                                     <Response>
                                         <Message method="GET">No citations found with that last name. Thanks for using our app!</Message>
                                     </Response>
                                     '''
+                            logout(request)
                             return HttpResponse(twil, content_type='application/xml', status=200)
                         else:
                             #if so, change auth_type to dob and send user message to send dob
@@ -106,14 +106,14 @@ def contact_received(request):
                         citation_in_db = Citation.objects.filter(last_name__iexact=request.session['last_name']).filter(date_of_birth=parser.parse(sms_from_user))
                     
                         if not citation_in_db.exists():
-                            #if not, throw error to user and send user message to send dob (or "restart" to start over)
-                            print "if not, throw error to user and send user message to send dob (or 'restart' to start over)"
-                            del request.session['auth_type']
+                            #if not, throw error to user
+                            print "if not, throw error to user3"
                             twil = '''<?xml version="1.0" encoding="UTF-8"?>
                                     <Response>
                                         <Message method="GET">No citations found with that last name and date of birth. Thanks for using our app!</Message>
                                     </Response>
                                     '''
+                            logout(request)
                             return HttpResponse(twil, content_type='application/xml', status=200)
                         else:
                             #if so, authenticated=True and move on to next step
