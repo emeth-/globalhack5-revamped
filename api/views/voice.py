@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 
 def contact_received_voice(request):
 
+    #Automatically reset user's sessions if they haven't communicated in 5 minutes
     if 'last_validated' in request.session:
 
         session_expiry = (parser.parse(request.session.get('last_validated', '2000-01-01')) + datetime.timedelta(minutes=5))
