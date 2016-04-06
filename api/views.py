@@ -174,14 +174,14 @@ def contact_received(request):
                 
             elif sms_from_user == '3':
                 #ticket payment
-                twil += "<Message>To pay by phone, call (877) 866-3926. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit our online website gh5thefoot.herokuapp.com or contact your judge to see if you are eligible.</Message>"
+                twil += "<Message>To pay by phone, call (314) 382-6544. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Message>"
                       
             else:
-                twil += "<Message>You have entered an invalid option.</Message>"
+                twil += "<Message>For additional assistance, please call the court clerk at 314-382-6544</Message>"
+                
+            twil += "<Message>For a list of violations, send 1. For citation information, send 2. For options on how to pay outstanding fines, send 3.</Message>"
 
-            twil += """
-                    </Response>
-                   """
+            twil += "</Response>"
             return HttpResponse(twil, content_type='application/xml', status=200)
             
     except:
@@ -405,7 +405,7 @@ def contact_received_voice(request):
 
             elif sms_from_user == '3':
                 #ticket payment
-                twil += "<Say>To pay by phone, call (877) 866-3926. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit our online website gh5thefoot.herokuapp.com or contact your judge to see if you are eligible.</Say>"
+                twil += "<Say>To pay by phone, call (314) 382-6544. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Say>"
 
             else:
                 twil += "<Say>You have entered an invalid option.</Say>"
