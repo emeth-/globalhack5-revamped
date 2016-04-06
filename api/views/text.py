@@ -1,13 +1,10 @@
 from django.http import HttpResponse
 import datetime
-import json
 from api.models import Citation, Violation
 from dateutil import parser
 from django.db.models import Q
-import sys
 from django.contrib.auth import logout
-from django.http import HttpResponseRedirect
-from utilities.custom_decorators import print_errors
+from custom_decorators import print_errors
 
 @print_errors
 def contact_received(request):
