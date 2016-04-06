@@ -42,10 +42,11 @@ def contact_received(request):
                 return HttpResponse(twil, content_type='application/xml', status=200)
             else:
                 #Existing user, trying to authenticate
+                print "Existing user, trying to authenticate"
                 if not request.session.get('authenticated', False):
                     if request.session['auth_type'] == "citation_or_license":
-                        
                         #Check and see if valid citation number / driver's license number.
+                        print "Check and see if valid citation number / driver's license number."
                         try:
                             potential_citation_number = int(sms_from_user)
                         except:
@@ -55,6 +56,7 @@ def contact_received(request):
                     
                         if not citation_in_db.exists():
                             #if not, change auth_type to last_name and send user message to send last name
+                            print "if not, change auth_type to last_name and send user message to send last name"
                             request.session['auth_type'] = "last_name"
                             twil = '''<?xml version="1.0" encoding="UTF-8"?>
                                     <Response>
@@ -64,16 +66,19 @@ def contact_received(request):
                             return HttpResponse(twil, content_type='application/xml', status=200)
                         else:
                             #if so, user authenticated and move on to next step [authenticated=True]
+                            print "if so, user authenticated and move on to next step [authenticated=True][1]"
                             request.session['citation_number'] = citation_in_db[0].citation_number
                             request.session['authenticated'] = True
                         
                     elif request.session['auth_type'] == "last_name":
                         
                         #Check and make sure users exist with that last name
+                        print "Check and make sure users exist with that last name"
                         citation_in_db = Citation.objects.filter(last_name__iexact=sms_from_user)
                     
                         if not citation_in_db.exists():
                             #if not, throw error to user and send user message to send last name
+                            print "if not, throw error to user and send user message to send last name"
                             request.session['auth_type'] = "last_name"
                             del request.session['auth_type']
                             twil = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -84,16 +89,19 @@ def contact_received(request):
                             return HttpResponse(twil, content_type='application/xml', status=200)
                         else:
                             #if so, change auth_type to dob and send user message to send dob
+                            print "if so, change auth_type to dob and send user message to send dob"
                             request.session['last_name'] = sms_from_user
                             request.session['auth_type'] = "dob"
                         
                     elif request.session['auth_type'] == "dob":
                         
                         #Check and make sure citations  exist with that last name and dob
+                        print "Check and make sure citations  exist with that last name and dob"
                         citation_in_db = Citation.objects.filter(last_name__iexact=request.session['last_name']).filter(date_of_birth=parser.parse(sms_from_user))
                     
                         if not citation_in_db.exists():
                             #if not, throw error to user and send user message to send dob (or "restart" to start over)
+                            print "if not, throw error to user and send user message to send dob (or 'restart' to start over)"
                             del request.session['auth_type']
                             twil = '''<?xml version="1.0" encoding="UTF-8"?>
                                     <Response>
