@@ -117,6 +117,7 @@ def contact_received(request):
                             request.session['authenticated'] = True
     
                 #user authenticated, send citation info!
+                print "user authenticated, send citation info!"
                 citation_in_db = Citation.objects.filter(citation_number=int(request.session['citation_number']))
                 violations_in_db = Violation.objects.filter(citation_number=request.session['citation_number'])
     
