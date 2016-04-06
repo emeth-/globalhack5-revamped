@@ -172,4 +172,4 @@ def contact_received(request):
         import sys
         import traceback
         etype, value, tb = sys.exc_info()
-        return ''.join(traceback.format_exception(etype, value, tb, limit))
+        print ''.join(traceback.format_exception(etype, value, tb, limit))
