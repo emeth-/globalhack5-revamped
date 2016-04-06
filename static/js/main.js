@@ -49,7 +49,7 @@ $body.on('click', '.submit-form', function () {
 
     $.ajax({
         type: 'GET',
-        url: 'http://globalhack5.herokuapp.com/get_info_special',
+        url: '/get_info_special',
         data: {
             important_number: importantNumber,
             last_name: lastName,
