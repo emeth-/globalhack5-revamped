@@ -17,7 +17,9 @@ The FOOT - Globalhack 5 Project
 - Create Twilio Account
 - Buy a number that has support for SMS and Voice ($1 a month)
 - Go to Phone Numbers -> Manage -> Click your phone number
-- Input the two urls as shown in the image below, replacing the domain with the location of your Heroku app.
+- Under Voice -> Request URL, set it to http://YOURDOMAIN.com/contact_received_voice as an HTTP POST
+- Under Messaging -> Request URL, set it to http://YOURDOMAIN.com/contact_received as an HTTP POST
+- It should look like the screenshot below
 
 ![](http://teachthe.net/topclipbox/2016-04-05_23-12-07PZCAFG.png)
 
