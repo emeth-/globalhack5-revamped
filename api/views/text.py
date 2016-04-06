@@ -164,5 +164,6 @@ def contact_received(request):
                 return HttpResponse(twil, content_type='application/xml', status=200)
     except:
         import sys
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print str(exc_type), exc_value, str(exc_traceback)
+        import traceback
+        etype, value, tb = sys.exc_info()
+        return ''.join(traceback.format_exception(etype, value, tb, limit))
