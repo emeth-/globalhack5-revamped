@@ -156,4 +156,4 @@ def contact_received(request):
     except:
         import sys
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        print exc_type, exc_value, exc_traceback
+        print str(exc_type), exc_value, str(exc_traceback)
