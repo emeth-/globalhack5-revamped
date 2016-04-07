@@ -45,7 +45,7 @@ def call_received(request):
                 
                 citation_in_db = Citation.objects.filter(Q(citation_number=potential_citation_number) | Q(drivers_license_number=input_from_user))
             
-                if not citation_in_db.exists():
+                if not citation_in_db.exists() or not input_from_user:
                     #if not, change auth_type to last_name and send user message to send last name
                     print "if not, change auth_type to last_name and send user message to send last name"
                     request.session['auth_type'] = "last_name"
