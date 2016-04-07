@@ -27,7 +27,7 @@ def call_received(request):
         request.session['auth_type'] = "citation_or_license"
         twil = '''<?xml version="1.0" encoding="UTF-8"?>
                 <Response>
-                    <Gather timeout="20" method="GET"><Say>Welcome to the St. Louis Regional Municipal Court System Helpline! Please enter your citation number or driver's license number followed by the pound sign. If you do not have either, just hit the pound sign.</Say></Gather>
+                    <Gather timeout="20" method="GET"><Say>Welcome to the St. Louis Regional Municipal Court System Helpline! Please enter your citation number or driver's license number followed by the pound sign. If you do not have either, press 1 followed by the pound sign.</Say></Gather>
                 </Response>
                 '''
         return HttpResponse(twil, content_type='application/xml', status=200)
