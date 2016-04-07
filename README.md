@@ -21,7 +21,7 @@ The FOOT - Globalhack 5 Project
 - Under Messaging -> Request URL, set it to http://YOURDOMAIN.com/sms_received as an HTTP POST
 - It should look like the screenshot below
 
-![](http://teachthe.net/topclipbox/2016-04-05_23-12-07PZCAFG.png)
+![](http://teachthe.net/topclipbox/2016-04-07_00-52-57IVAKK4.png)
 
 #### Development Info
 ```
