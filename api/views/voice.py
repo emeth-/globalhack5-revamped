@@ -163,7 +163,7 @@ def call_received(request):
                 twil = twil.replace('{violation_info}',violation_info)
         elif input_from_user == "2":
             twil += '<Say>{citation_info}</Say>'
-            citation_info = "Your citation number is " + str(citation_obj['citation_number']) + ", and its date is " + str(citation_obj['citation_date']).split(' ')[0]
+            citation_info = "Your citation number is " + "".join([c+" " for c in str(citation_obj['citation_number'])]) + ", and its date is " + str(citation_obj['citation_date']).split(' ')[0]
             twil = twil.replace('{citation_info}',citation_info)
         elif input_from_user == "3":
             twil += "<Say>To pay by phone, call (314) 382-6544. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Say>"
@@ -177,7 +177,7 @@ def call_received(request):
                 ticket_info += " You do not have an outstanding warrant. "
             ticket_info += "You currently have an outstanding balance of $" + str(total_owed) + ". "
             twil = twil.replace("{ticket_info}", ticket_info)
-        twil += "<Say>For a list of violations, send 1. For citation information, send 2. For options on how to pay outstanding fines, send 3. For additional assistance, please call the court clerk at (314) 382-6544</Say>"
+        twil += "<Say>For a list of violations, press 1 followed by the pound sign. For citation information, press 2 followed by the pound sign. For options on how to pay outstanding fines, press 3 followed by the pound sign. For additional assistance, please call the court clerk at (314) 382-6544</Say>"
 
         twil += "</Gather></Response>"
         return HttpResponse(twil, content_type='application/xml', status=200)
