@@ -7,7 +7,7 @@ from django.contrib.auth import logout
 from custom_decorators import print_errors
 
 @print_errors
-def contact_received(request):
+def sms_received(request):
 
     #Automatically reset user's sessions if they haven't communicated in 5 minutes
     if 'last_validated' in request.session:
