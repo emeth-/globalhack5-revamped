@@ -177,7 +177,7 @@ def call_received(request):
                 ticket_info += " You do not have an outstanding warrant. "
             ticket_info += "You currently have an outstanding balance of $" + str(total_owed) + ". "
             twil = twil.replace("{ticket_info}", ticket_info)
-        twil += "<Say>For a list of violations, press 1 followed by the pound sign. For citation information, press 2 followed by the pound sign. For options on how to pay outstanding fines, press 3 followed by the pound sign. For additional assistance, please call the court clerk at (314) 382-6544</Say>"
+        twil += "<Say>For a list of violations, press 1. For citation information, press 2. For options on how to pay outstanding fines, press 3. For additional assistance, please call the court clerk at (314) 382-6544</Say>"
 
         twil += "</Gather></Response>"
         return HttpResponse(twil, content_type='application/xml', status=200)
