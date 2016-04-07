@@ -96,7 +96,7 @@ def call_received(request):
                 request.session['auth_type'] = "dob_date"
                 twil = '''<?xml version="1.0" encoding="UTF-8"?>
                         <Response>
-                            <Gather timeout="20" method="GET"><Say>Please enter your date of birth followed by the pound sign.</Say></Gather>
+                            <Gather timeout="20" method="GET"><Say>Please enter your day of birth followed by the pound sign.</Say></Gather>
                         </Response>
                         '''
                 return HttpResponse(twil, content_type='application/xml', status=200)
