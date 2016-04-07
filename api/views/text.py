@@ -23,7 +23,7 @@ def contact_received(request):
     if 'Body' in request.POST and request.POST['Body'].lower() == "restart":
         logout(request)
         
-    sms_from_user = request.POST.get('Body', '')
+    input_from_user = request.POST.get('Body', '')
 
     if 'auth_type' not in request.session:
         #New user!
@@ -42,11 +42,11 @@ def contact_received(request):
                 #Check and see if valid citation number / driver's license number.
                 print "Check and see if valid citation number / driver's license number."
                 try:
-                    potential_citation_number = int(sms_from_user)
+                    potential_citation_number = int(input_from_user)
                 except:
                     potential_citation_number = -1
                 
-                citation_in_db = Citation.objects.filter(Q(citation_number=potential_citation_number) | Q(drivers_license_number=sms_from_user))
+                citation_in_db = Citation.objects.filter(Q(citation_number=potential_citation_number) | Q(drivers_license_number=input_from_user))
             
                 if not citation_in_db.exists():
                     #if not, change auth_type to last_name and send user message to send last name
@@ -68,7 +68,7 @@ def contact_received(request):
                 
                 #Check and make sure users exist with that last name
                 print "Check and make sure users exist with that last name"
-                citation_in_db = Citation.objects.filter(last_name__iexact=sms_from_user)
+                citation_in_db = Citation.objects.filter(last_name__iexact=input_from_user)
             
                 if not citation_in_db.exists():
                     #if not, throw error to user
@@ -84,7 +84,7 @@ def contact_received(request):
                 else:
                     #if so, change auth_type to dob and send user message to send dob
                     print "if so, change auth_type to dob and send user message to send dob"
-                    request.session['last_name'] = sms_from_user
+                    request.session['last_name'] = input_from_user
                     request.session['auth_type'] = "dob"
                     twil = '''<?xml version="1.0" encoding="UTF-8"?>
                             <Response>
@@ -97,7 +97,7 @@ def contact_received(request):
                 
                 #Check and make sure citations  exist with that last name and dob
                 print "Check and make sure citations  exist with that last name and dob"
-                citation_in_db = Citation.objects.filter(last_name__iexact=request.session['last_name']).filter(date_of_birth=parser.parse(sms_from_user))
+                citation_in_db = Citation.objects.filter(last_name__iexact=request.session['last_name']).filter(date_of_birth=parser.parse(input_from_user))
             
                 if not citation_in_db.exists():
                     #if not, throw error to user
@@ -111,7 +111,7 @@ def contact_received(request):
                     return HttpResponse(twil, content_type='application/xml', status=200)
                 else:
                     #if so, authenticated=True and move on to next step
-                    request.session['dob'] = sms_from_user
+                    request.session['dob'] = input_from_user
                     del request.session['auth_type']
                     request.session['citation_number'] = citation_in_db[0].citation_number
                     request.session['authenticated'] = True
@@ -135,16 +135,16 @@ def contact_received(request):
         citation_obj['has_warrant'] = has_warrant
         
         twil = '''<?xml version="1.0" encoding="UTF-8"?><Response>'''
-        if sms_from_user == "1":
+        if input_from_user == "1":
             for v in violations_in_db:
                 twil += '<Message> {violation_info}</Message>'
                 violation_info = "Your violation is " + str(v.violation_description) + ", with a fine amount of $" + str(v.fine_amount or 0) + " and a court cost of $" + str(v.court_cost or 0)
                 twil = twil.replace('{violation_info}',violation_info)
-        elif sms_from_user == "2":
+        elif input_from_user == "2":
             twil += '<Message>{citation_info}</Message>'
             citation_info = "Your citation number is " + str(citation_obj['citation_number']) + ", and its date is " + str(citation_obj['citation_date']).split(' ')[0]
             twil = twil.replace('{citation_info}',citation_info)
-        elif sms_from_user == "3":
+        elif input_from_user == "3":
             twil += "<Message>To pay by phone, call (314) 382-6544. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Message>"
         else:
             #send general citation info

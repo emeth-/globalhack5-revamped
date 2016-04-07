@@ -19,11 +19,8 @@ def contact_received_voice(request):
             logout(request)
     else:
         request.session['last_validated'] = datetime.datetime.now().isoformat()
-        
-    if 'Body' in request.POST and request.POST['Body'].lower() == "restart":
-        logout(request)
 
-    sms_from_user = request.GET.get('Digits', '')
+    input_from_user = request.GET.get('Digits', '')
 
     if 'auth_type' not in request.session:
         #New user!
@@ -42,11 +39,11 @@ def contact_received_voice(request):
                 #Check and see if valid citation number / driver's license number.
                 print "Check and see if valid citation number / driver's license number."
                 try:
-                    potential_citation_number = int(sms_from_user)
+                    potential_citation_number = int(input_from_user)
                 except:
                     potential_citation_number = -1
                 
-                citation_in_db = Citation.objects.filter(Q(citation_number=potential_citation_number) | Q(drivers_license_number=sms_from_user))
+                citation_in_db = Citation.objects.filter(Q(citation_number=potential_citation_number) | Q(drivers_license_number=input_from_user))
             
                 if not citation_in_db.exists():
                     #if not, change auth_type to last_name and send user message to send last name
@@ -68,7 +65,7 @@ def contact_received_voice(request):
                 
                 #Check and make sure users exist with that last name
                 print "Check and make sure users exist with that last name"
-                citation_in_db = Citation.objects.filter(last_name__iexact=sms_from_user)
+                citation_in_db = Citation.objects.filter(last_name__iexact=input_from_user)
             
                 if not citation_in_db.exists():
                     #if not, throw error to user
@@ -84,7 +81,7 @@ def contact_received_voice(request):
                 else:
                     #if so, change auth_type to dob and send user message to send dob
                     print "if so, change auth_type to dob and send user message to send dob"
-                    request.session['last_name'] = sms_from_user
+                    request.session['last_name'] = input_from_user
                     request.session['auth_type'] = "dob_month"
                     twil = '''<?xml version="1.0" encoding="UTF-8"?>
                             <Response>
@@ -95,7 +92,7 @@ def contact_received_voice(request):
                 
             elif request.session['auth_type'] == "dob_month":
                 
-                request.session['dob_month'] = sms_from_user
+                request.session['dob_month'] = input_from_user
                 request.session['auth_type'] = "dob_date"
                 twil = '''<?xml version="1.0" encoding="UTF-8"?>
                         <Response>
@@ -106,7 +103,7 @@ def contact_received_voice(request):
             
             elif request.session['auth_type'] == "dob_date":
                 
-                request.session['dob_date'] = sms_from_user
+                request.session['dob_date'] = input_from_user
                 request.session['auth_type'] = "dob_year"
                 twil = '''<?xml version="1.0" encoding="UTF-8"?>
                         <Response>
@@ -119,7 +116,7 @@ def contact_received_voice(request):
                 
                 #Check and make sure citations  exist with that last name and dob
                 print "Check and make sure citations  exist with that last name and dob"
-                request.session['dob_year'] = sms_from_user
+                request.session['dob_year'] = input_from_user
                 full_birthday = request.session['dob_month'] + "/" + request.session['dob_date'] + "/" + request.session['dob_year']
                 citation_in_db = Citation.objects.filter(last_name__iexact=request.session['last_name']).filter(date_of_birth=parser.parse(full_birthday))
             
@@ -159,16 +156,16 @@ def contact_received_voice(request):
         citation_obj['has_warrant'] = has_warrant
         
         twil = '''<?xml version="1.0" encoding="UTF-8"?><Response><Gather timeout="20" method="GET" numDigits="1">'''
-        if sms_from_user == "1":
+        if input_from_user == "1":
             for v in violations_in_db:
                 twil += '<Say> {violation_info}</Say>'
                 violation_info = "Your violation is " + str(v.violation_description) + ", with a fine amount of $" + str(v.fine_amount or 0) + " and a court cost of $" + str(v.court_cost or 0)
                 twil = twil.replace('{violation_info}',violation_info)
-        elif sms_from_user == "2":
+        elif input_from_user == "2":
             twil += '<Say>{citation_info}</Say>'
             citation_info = "Your citation number is " + str(citation_obj['citation_number']) + ", and its date is " + str(citation_obj['citation_date']).split(' ')[0]
             twil = twil.replace('{citation_info}',citation_info)
-        elif sms_from_user == "3":
+        elif input_from_user == "3":
             twil += "<Say>To pay by phone, call (314) 382-6544. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Say>"
         else:
             #send general citation info
