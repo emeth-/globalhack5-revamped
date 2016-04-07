@@ -12,6 +12,7 @@ def print_errors(func):
             return func(*args, **kwargs)
         except:
             etype, value, tb = sys.exc_info()
+            print "caught an error :(", value, etype
             print ''.join(traceback.format_exception(etype, value, tb))
             raise
     return wrapper
