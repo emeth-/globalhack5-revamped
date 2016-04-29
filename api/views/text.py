@@ -145,7 +145,7 @@ def sms_received(request):
             citation_info = "Your citation number is " + str(citation_obj['citation_number']) + ", and its date is " + str(citation_obj['citation_date']).split(' ')[0]
             twil = twil.replace('{citation_info}',citation_info)
         elif input_from_user == "3":
-            twil += "<Message>To pay by phone, call (314) 382-6544. To pay in person, go to Missouri Fine Collection Center, P.O. Box 104540, Jefferson City, MO 65110. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Message>"
+            twil += "<Message>To pay by phone, call (314) 382-6544. To pay in person, go to 7150 Natural Bridge Rd, St Louis, MO 63121. For community service options, visit YourSTLCourts.com or contact your judge to see if you are eligible.</Message>"
         else:
             #send general citation info
             twil += '''<Message method="GET">{ticket_info}</Message>'''
